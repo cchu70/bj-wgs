@@ -32,10 +32,14 @@ process SENTIEON_DNASCOPE {
 
     """
     set +u
-    
-    export SENTIEON_LICENSE=\$SENTIEON_LICENSE_SERVER
-    echo \$SENTIEON_LICENSE
-    
+    if [ "\${LOCAL:-false}" != "true" ]; then
+        . /opt/sentieon/cloud_auth.sh no-op
+    else
+        export SENTIEON_LICENSE=\$SENTIEON_LICENSE_SERVER
+        echo \$SENTIEON_LICENSE
+    fi
+    [ -n "\${SENTIEON_BIN:-}" ] && export PATH=\$SENTIEON_BIN:\$PATH
+
     sentieon driver \
     -t ${task.cpus} \
     -r ${fasta_ref}/genome.fa \

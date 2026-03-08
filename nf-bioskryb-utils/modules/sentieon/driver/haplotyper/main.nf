@@ -27,8 +27,9 @@ process SENTIEON_HAPLOTYPER {
         export SENTIEON_LICENSE=\$SENTIEON_LICENSE_SERVER
         echo \$SENTIEON_LICENSE
     fi
+    [ -n "\${SENTIEON_BIN:-}" ] && export PATH=\$SENTIEON_BIN:\$PATH
 
-    
+
     sentieon driver -t ${task.cpus} -r ${fasta_ref}/genome.fa \
              -i ${bam} -q ${recal_table} \
              --interval ${interval} \

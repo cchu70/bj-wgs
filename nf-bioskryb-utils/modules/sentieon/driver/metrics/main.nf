@@ -33,8 +33,9 @@ process SENTIEON_DRIVER_METRICS {
             export SENTIEON_LICENSE=\$SENTIEON_LICENSE_SERVER
             echo \$SENTIEON_LICENSE
         fi
-    
-    
+        [ -n "\${SENTIEON_BIN:-}" ] && export PATH=\$SENTIEON_BIN:\$PATH
+
+
         sentieon driver  -t $task.cpus -r ${fasta_ref}/genome.fa -i ${bam} ${bqsr} \
                 --interval ${wgs_or_target_intervals} \
                 --algo GCBias --summary ${sample_name}.${type}.gcbias_summary.sentieonmetrics.txt ${sample_name}.${type}.gcbias.sentieonmetrics.txt \
@@ -61,6 +62,7 @@ process SENTIEON_DRIVER_METRICS {
             export SENTIEON_LICENSE=\$SENTIEON_LICENSE_SERVER
             echo \$SENTIEON_LICENSE
         fi
+        [ -n "\${SENTIEON_BIN:-}" ] && export PATH=\$SENTIEON_BIN:\$PATH
         echo "${bqsr}"
         echo "${recal_table_file.name}"
         
@@ -88,14 +90,15 @@ process SENTIEON_DRIVER_METRICS {
         
         """
         set +u
-        
+
         if [ \$LOCAL != "true" ]; then
             . /opt/sentieon/cloud_auth.sh no-op
         else
             export SENTIEON_LICENSE=\$SENTIEON_LICENSE_SERVER
             echo \$SENTIEON_LICENSE
         fi
-        
+        [ -n "\${SENTIEON_BIN:-}" ] && export PATH=\$SENTIEON_BIN:\$PATH
+
         sentieon driver  -t $task.cpus -r ${fasta_ref}/genome.fa -i ${bam} \
                --interval ${base_metrics_intervals} \
                --algo WgsMetricsAlgo ${sample_name}.${type}.wgsmetricsalgo.sentieonmetrics.txt \

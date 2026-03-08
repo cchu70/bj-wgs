@@ -50,7 +50,8 @@ process SENTIEON_ALIGNMENT {
         export SENTIEON_LICENSE=\$SENTIEON_LICENSE_SERVER
         echo \$SENTIEON_LICENSE
     fi
-    
+    [ -n "\${SENTIEON_BIN:-}" ] && export PATH=\$SENTIEON_BIN:\$PATH
+
     export bwt_max_mem=\$([ ${task.memory.toGiga()} -gt 30 ] && echo "30G" || echo "${task.memory.toGiga()}G")
  
     
@@ -129,7 +130,8 @@ process SENTIEON_ALGORITHM {
     """
     export SENTIEON_LICENSE=\$SENTIEON_LICENSE_SERVER
     echo \$SENTIEON_LICENSE
-    
+    [ -n "\${SENTIEON_BIN:-}" ] && export PATH=\$SENTIEON_BIN:\$PATH
+
     if [[ ${genome} =~ .*GRCh3* ]];
     then
          # run bqsr
